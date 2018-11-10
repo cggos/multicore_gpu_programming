@@ -1,0 +1,15 @@
+FLAGS=-g 
+
+all:	hough
+
+hough:	hough.cu.o pgm.o
+	g++ ${FLAGS} -o hough hough.cu.o pgm.o -lglut -locelot -lGLEW -lGLU -L/usr/l/checkout/gpuocelot/ocelot/build_local/lib/
+
+hough.cu.o:		hough.cu.cpp
+	g++ ${FLAGS} -c hough.cu.cpp
+
+hough.cu.cpp : hough.cu ../common/pgm.h
+	nvcc -arch=sm_20 hough.cu -cuda -o hough.cu.cpp
+
+pgm.o:	../common/pgm.cpp
+	g++ ${FLAGS} -c ../common/pgm.cpp -o ./pgm.o

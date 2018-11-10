@@ -1,0 +1,9 @@
+100 1920 1080 img
+-1.9 0.94 1.2 -0.94 100
+0.00164372197 -0.822467633298876 0.001643721971153 -0.822467633298227 10000
+
+-.5 .1 .8 -.1 2048
+
+//  numframes resolutionX resolutionY imageFilePrefix
+//  upperCornerX upperCornerY lowerCornerX lowerCornerY maxIterations  ; for first frame
+//  upperCornerX upperCornerY lowerCornerX lowerCornerY maxIterations  ; for last frame

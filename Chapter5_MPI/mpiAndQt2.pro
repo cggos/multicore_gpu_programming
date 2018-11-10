@@ -1,0 +1,6 @@
+SOURCES+=mpiAndQt2.cpp
+CONFIG+=qt 
+TARGET=mpiAndQt2
+QMAKE_CXX=mpiCC
+QMAKE_CC=mpicc
+QMAKE_LINK=mpiCC

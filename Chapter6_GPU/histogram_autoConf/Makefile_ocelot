@@ -1,0 +1,13 @@
+all:	histogram
+
+histogram:	histogram.cu.o pgm.o
+	g++ -o histogram histogram.cu.o pgm.o -lglut -locelot -lGLEW -lGLU -L/usr/l/checkout/gpuocelot/ocelot/build_local/lib/
+
+histogram.cu.o:		histogram.cu.cpp
+	g++ -c histogram.cu.cpp
+
+histogram.cu.cpp : histogram.cu ../common/pgm.h
+	nvcc -arch=sm_20 histogram.cu -cuda -o histogram.cu.cpp
+
+pgm.o:	../common/pgm.cpp
+	g++ -c ../common/pgm.cpp -o ./pgm.o

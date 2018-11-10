@@ -1,0 +1,57 @@
+#include <math.h>
+#include <assert.h>
+#include <iostream>
+using namespace std;
+
+//******************************************************************************************************
+// returns the predicted execution time
+// and the calculated parts in array part[]
+double nPortPartition(double *p, double *e, long L, double l, double a, double b,  double c, double d, double *part, int N)
+{
+  double lacp[N];
+  double sumTerms[N];
+  
+  for(int i=0;i<N;i++)
+    lacp[i] = 1.0/(l*(a+c)+p[i]);
+
+  // sumTerms[0] is not utilized
+  for(int i=1;i<N;i++)
+    sumTerms[i] = (p[0]*e[0] - p[i]*e[i]) * lacp[i] / L;
+    
+  double nomin=1, denom=0;
+  for(int i=1;i<N;i++)
+  {
+    nomin -= sumTerms[i];
+    denom += lacp[i];
+  }
+  denom*=(l*(a+c)+p[0]);
+  denom++;
+  part[0] = nomin/denom;
+  
+  for(int i=1;i<N;i++)
+    part[i] = part[0] * (p[0] + l*(a+c))*lacp[i] + sumTerms[i];
+
+    for(int i=0;i<N;i++)
+      cerr << i << " " << part[i] << endl;
+  
+  // sanity check
+  double sum=0;
+  for(int i=0;i<N;i++)
+    sum += part[i];
+  assert(fabs(sum -1)<0.001);
+  
+  // return the exec. time
+  return p[0]*(part[0]*L+e[0]);
+}
+//******************************************************************************************************
+// returns the assigned load in array assign[], that are multiples of quantum (assuming L is also a multiple of quantum)
+void quantize(double *part, long L, int quantum, int N, long *assign)
+{
+   int totAssigned=0;
+   for(int i=1;i<N;i++)
+   {
+     assign[i] = ((long)floor(part[i]*L/quantum))*quantum;
+     totAssigned += assign[i];     
+   }
+   assign[0] = L - totAssigned;
+}
